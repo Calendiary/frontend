@@ -4,7 +4,6 @@ export const CalendarContainer = styled.div`
   width: 100%;
   max-width: 600px;
   margin: 20px auto;
-
   border-radius: 8px;
   box-shadow: 0 4px 8px rgb(255, 255, 255);
   overflow: hidden;
@@ -46,7 +45,7 @@ export const CalendarGrid = styled.div`
   grid-template-columns: repeat(7, 1fr);
   gap: 1px;
   background-color: #ddd;
-
+  border: none;
   .day-name {
     padding: 10px;
     background-color: #f5f5f5;

@@ -1,8 +1,23 @@
-//네비게이션바
 import React from 'react';
+import { useLocation } from 'react-router-dom';
+import { NavContainer, NavItem } from './NavbarStyle';
 
-const Navbar: React.FC = () => {
-  return <nav>Navbar</nav>;
+const Navigator: React.FC = () => {
+  const location = useLocation();
+
+  return (
+    <NavContainer>
+      <NavItem to="/" active={location.pathname === '/'}>
+        Main
+      </NavItem>
+      <NavItem
+        to="/list"
+        active={location.pathname === '/list'}
+      >
+        List
+      </NavItem>
+    </NavContainer>
+  );
 };
 
-export default Navbar;
+export default Navigator;
