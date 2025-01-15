@@ -18,13 +18,13 @@ export const NavContainer = styled.nav`
 
 export const NavItem = styled(Link)<{ active: boolean }>`
   text-decoration: none;
-  color: ${(props) => (props.active ? '#007bff' : '#666')};
+  color: ${(props) => (props.active ? '#000' : '#666')};
   font-size: 1rem;
   font-weight: ${(props) =>
     props.active ? 'bold' : 'normal'};
   transition: color 0.3s;
 
   &:hover {
-    color: #0056b3;
+    color: rgb(0, 0, 0);
   }
 `;

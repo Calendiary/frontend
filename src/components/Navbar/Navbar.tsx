@@ -1,6 +1,10 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 import { NavContainer, NavItem } from './NavbarStyle';
+import {
+  AiOutlineHome,
+  AiOutlineUnorderedList,
+} from 'react-icons/ai';
 
 const Navigator: React.FC = () => {
   const location = useLocation();
@@ -8,13 +12,13 @@ const Navigator: React.FC = () => {
   return (
     <NavContainer>
       <NavItem to="/" active={location.pathname === '/'}>
-        Main
+        <AiOutlineHome />
       </NavItem>
       <NavItem
         to="/list"
         active={location.pathname === '/list'}
       >
-        List
+        <AiOutlineUnorderedList />
       </NavItem>
     </NavContainer>
   );
