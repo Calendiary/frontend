@@ -1,7 +1,7 @@
 import React from 'react';
-
+import Calendar from '../../components/Calendar/Calendar';
 const Main: React.FC = () => {
-  return <h1>메인 달력 페이지</h1>;
+  return <Calendar />;
 };
 
 export default Main;
