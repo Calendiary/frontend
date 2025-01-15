@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   CalendarContainer,
   CalendarHeader,
   CalendarGrid,
   CalendarDay,
+  CalendarNavButton,
 } from './CalendarStyle';
 
 const daysOfWeek = [
@@ -17,17 +18,21 @@ const daysOfWeek = [
 ];
 
 const Calendar: React.FC = () => {
-  const today = new Date();
-  const year = today.getFullYear();
-  const month = today.getMonth();
+  // 현재 연도와 월을 상태로 관리
+  const [currentDate, setCurrentDate] = useState(
+    new Date()
+  );
+
+  const year = currentDate.getFullYear();
+  const month = currentDate.getMonth();
 
   // 해당 월의 첫 번째 날짜와 마지막 날짜 계산
-  const firstDayOfMonth = new Date(year, month, 1).getDay(); // 첫 날 요일 (0: Sun, 1: Mon, ...)
+  const firstDayOfMonth = new Date(year, month, 1).getDay();
   const lastDateOfMonth = new Date(
     year,
     month + 1,
     0
-  ).getDate(); // 마지막 날짜
+  ).getDate();
 
   // 달력 날짜 배열 생성
   const days: (number | null)[] = [
@@ -38,14 +43,33 @@ const Calendar: React.FC = () => {
     ), // 날짜 채우기
   ];
 
+  // 이전 달로 이동
+  const goToPreviousMonth = () => {
+    setCurrentDate(new Date(year, month - 1, 1));
+  };
+
+  // 다음 달로 이동
+  const goToNextMonth = () => {
+    setCurrentDate(new Date(year, month + 1, 1));
+  };
+
   return (
     <CalendarContainer>
       <CalendarHeader>
+        <CalendarNavButton onClick={goToPreviousMonth}>
+          &lt;
+        </CalendarNavButton>
         <h2>
-          {`${today.toLocaleString('default', {
-            month: 'long',
-          })} ${year}`}
+          {`${year} ${currentDate.toLocaleString(
+            'default',
+            {
+              month: 'long',
+            }
+          )} `}
         </h2>
+        <CalendarNavButton onClick={goToNextMonth}>
+          &gt;
+        </CalendarNavButton>
       </CalendarHeader>
       <CalendarGrid>
         {/* 요일 헤더 */}

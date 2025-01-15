@@ -4,14 +4,17 @@ export const CalendarContainer = styled.div`
   width: 100%;
   max-width: 600px;
   margin: 20px auto;
-  border: 1px solid #ddd;
+
   border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgb(255, 255, 255);
   overflow: hidden;
   background-color: #fff;
 `;
 
 export const CalendarHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   padding: 10px;
   background-color: #f5f5f5;
   text-align: center;
@@ -21,6 +24,20 @@ export const CalendarHeader = styled.div`
     margin: 0;
     font-size: 1.5rem;
     color: #333;
+  }
+`;
+
+export const CalendarNavButton = styled.button`
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #333;
+  padding: 5px 10px;
+  transition: color 0.2s;
+
+  &:hover {
+    color: #007bff;
   }
 `;
 
@@ -45,7 +62,7 @@ export const CalendarGrid = styled.div`
 
 export const CalendarDay = styled.div`
   padding: 15px;
-  text-align: center;
+  text-align: left;
   background-color: #fff;
   font-size: 1rem;
   cursor: pointer;
