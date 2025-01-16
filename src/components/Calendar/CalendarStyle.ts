@@ -2,11 +2,14 @@ import styled from 'styled-components';
 
 export const CalendarContainer = styled.div`
   width: 100%;
+  position: fixed;
   max-width: 600px;
-  margin: 100px auto;
+  margin: 110px 0px auto;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgb(255, 255, 255);
   overflow: hidden;
+  left: 50%;
+  transform: translateX(-50%);
   background-color: #fff;
 `;
 
