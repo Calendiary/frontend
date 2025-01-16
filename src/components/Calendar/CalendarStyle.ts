@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const CalendarContainer = styled.div`
   width: 100%;
   max-width: 600px;
-  margin: 20px auto;
+  margin: 100px auto;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgb(255, 255, 255);
   overflow: hidden;
@@ -44,8 +44,8 @@ export const CalendarGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 1px;
-  background-color: #ddd;
   border: none;
+  background-color: #ddd;
   .day-name {
     padding: 10px;
     background-color: #f5f5f5;
@@ -61,6 +61,7 @@ export const CalendarGrid = styled.div`
 
 export const CalendarDay = styled.div`
   padding: 15px;
+  height: 60px;
   text-align: left;
   background-color: #fff;
   font-size: 1rem;
