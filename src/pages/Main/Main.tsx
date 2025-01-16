@@ -8,7 +8,7 @@ const Main: React.FC = () => {
     <div>
       <LoginModal />
       <Header />
-      <Calendar />{' '}
+      <Calendar />
     </div>
   );
 };
