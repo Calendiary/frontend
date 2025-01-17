@@ -7,6 +7,7 @@ import {
 import './global.css';
 import List from './pages/List/List';
 import Main from './pages/Main/Main';
+import KakaoCallback from './auth/kakao/kakaoCallback';
 import Navigator from './components/Navbar/Navbar';
 
 const App: React.FC = () => {
@@ -15,6 +16,10 @@ const App: React.FC = () => {
       <Routes>
         <Route path="/" element={<Main />} />
         <Route path="/list" element={<List />} />
+        <Route
+          path="/auth/kakao/callback"
+          element={<KakaoCallback />}
+        />
       </Routes>
       <Navigator />
     </Router>
