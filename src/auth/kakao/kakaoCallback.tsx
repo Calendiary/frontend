@@ -23,14 +23,22 @@ const KakaoCallback: React.FC = () => {
           );
           console.log('Server Response:', response.data);
 
-          const { userId, nickname, profileImage } =
-            response.data;
+          const {
+            id,
+            nickname,
+            profileNickname,
+            profileImage,
+          } = response.data;
 
           console.log('로그인 성공:', response.data);
 
           // 로컬 스토리지에 저장
-          localStorage.setItem('userId', userId);
+          localStorage.setItem('userId', id);
           localStorage.setItem('nickname', nickname);
+          localStorage.setItem(
+            'profileNickname',
+            profileNickname
+          );
           localStorage.setItem(
             'profileImage',
             profileImage
