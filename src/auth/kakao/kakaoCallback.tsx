@@ -13,14 +13,20 @@ const KakaoCallback: React.FC = () => {
       const code = params.get('code'); // 카카오에서 받은 인증 코드
 
       if (code) {
+        console.log('Kakao Authorization Code:', code);
+
         try {
           // 백엔드로 인증 코드 전송
           const response = await axios.post(
-            'http://localhost:8080/api/auth/kakao',
+            `${process.env.REACT_APP_BACKEND_URL}/api/users/auth/kakao`,
             { code }
           );
+          console.log('Server Response:', response.data);
+
           const { userId, nickname, profileImage } =
             response.data;
+
+          console.log('로그인 성공:', response.data);
 
           // 로컬 스토리지에 저장
           localStorage.setItem('userId', userId);
@@ -36,6 +42,9 @@ const KakaoCallback: React.FC = () => {
           console.error('카카오 로그인 실패:', error);
           navigate('/'); // 실패 시 메인으로 돌아감
         }
+      } else {
+        console.error('카카오 인증 코드가 없습니다.');
+        navigate('/'); // 인증 코드가 없을 경우 메인으로
       }
     };
 
