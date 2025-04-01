@@ -1,11 +1,4 @@
 import React, { useState } from 'react';
-import {
-  CalendarContainer,
-  CalendarHeader,
-  CalendarGrid,
-  CalendarDay,
-  CalendarNavButton,
-} from './CalendarStyle';
 
 const daysOfWeek = [
   'Sun',
@@ -18,7 +11,6 @@ const daysOfWeek = [
 ];
 
 const Calendar: React.FC = () => {
-  // 현재 연도와 월을 상태로 관리
   const [currentDate, setCurrentDate] = useState(
     new Date()
   );
@@ -26,7 +18,6 @@ const Calendar: React.FC = () => {
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
 
-  // 해당 월의 첫 번째 날짜와 마지막 날짜 계산
   const firstDayOfMonth = new Date(year, month, 1).getDay();
   const lastDateOfMonth = new Date(
     year,
@@ -34,63 +25,74 @@ const Calendar: React.FC = () => {
     0
   ).getDate();
 
-  // 달력 날짜 배열 생성
   const days: (number | null)[] = [
-    ...Array.from({ length: firstDayOfMonth }, () => null), // 첫 주 공백 채우기
+    ...Array.from({ length: firstDayOfMonth }, () => null),
     ...Array.from(
       { length: lastDateOfMonth },
       (_, i) => i + 1
-    ), // 날짜 채우기
+    ),
   ];
 
-  // 이전 달로 이동
   const goToPreviousMonth = () => {
     setCurrentDate(new Date(year, month - 1, 1));
   };
 
-  // 다음 달로 이동
   const goToNextMonth = () => {
     setCurrentDate(new Date(year, month + 1, 1));
   };
 
   return (
-    <CalendarContainer>
-      <CalendarHeader>
-        <CalendarNavButton onClick={goToPreviousMonth}>
+    <div className="fixed left-1/2 -translate-x-1/2 mt-[110px] w-full max-w-[600px] rounded-lg shadow-lg bg-white overflow-hidden z-10">
+      <div className="flex items-center justify-between px-4 py-2 bg-gray-100 border-b border-gray-300">
+        <button
+          onClick={goToPreviousMonth}
+          className="text-xl px-2 hover:text-blue-500 transition-colors"
+        >
           &lt;
-        </CalendarNavButton>
-        <h2>
+        </button>
+        <h2 className="text-xl font-semibold text-gray-800">
           {`${year} ${currentDate.toLocaleString(
             'default',
             {
               month: 'long',
             }
-          )} `}
+          )}`}
         </h2>
-        <CalendarNavButton onClick={goToNextMonth}>
+        <button
+          onClick={goToNextMonth}
+          className="text-xl px-2 hover:text-blue-500 transition-colors"
+        >
           &gt;
-        </CalendarNavButton>
-      </CalendarHeader>
-      <CalendarGrid>
-        {/* 요일 헤더 */}
+        </button>
+      </div>
+
+      <div className="grid grid-cols-7 gap-px bg-gray-300 text-sm">
         {daysOfWeek.map((day) => (
-          <div key={day} className="day-name">
+          <div
+            key={day}
+            className="py-2 bg-gray-100 text-center font-bold text-gray-600"
+          >
             {day}
           </div>
         ))}
 
-        {/* 날짜와 빈 칸 렌더링 */}
         {days.map((day, index) =>
           day ? (
-            <CalendarDay key={index} className="date">
+            <div
+              key={index}
+              className="h-[60px] p-3 bg-white text-left cursor-pointer hover:bg-gray-100 transition-colors"
+            >
               {day}
-            </CalendarDay>
+            </div>
           ) : (
-            <div key={index} className="empty"></div>
+            <div
+              key={index}
+              className="h-[60px] bg-white"
+            ></div>
           )
         )}
-      </CalendarGrid>
-    </CalendarContainer>
+      </div>
+    </div>
   );
 };
 
