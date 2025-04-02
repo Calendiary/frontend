@@ -12,7 +12,7 @@ const Navigator: React.FC = () => {
     location.pathname === path;
 
   return (
-    <nav className="fixed bottom-0 w-full left-1/2 -translate-x-1/2 max-w-[600px] bg-gray-100 shadow-[0_-2px_5px_rgba(0,0,0,0.1)] flex z-[1000]">
+    <nav className="block lg:hidden fixed bottom-0 w-full left-1/2 -translate-x-1/2 max-w-[1024px] bg-gray-100 shadow-[0_-2px_5px_rgba(0,0,0,0.1)] flex z-[1000]">
       <Link
         to="/"
         className={`w-1/2 flex items-center justify-center py-3 text-2xl transition-colors ${
