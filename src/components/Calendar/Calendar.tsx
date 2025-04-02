@@ -42,15 +42,16 @@ const Calendar: React.FC = () => {
   };
 
   return (
-    <div className="fixed left-1/2 -translate-x-1/2 mt-[110px] w-full max-w-[600px] rounded-lg shadow-lg bg-white overflow-hidden z-10">
-      <div className="flex items-center justify-between px-4 py-2 bg-gray-100 border-b border-gray-300">
+    <div className="fixed left-1/2 -translate-x-1/2 mt-28 w-full max-w-[600px] bg-pink-50 rounded-2xl shadow-md overflow-hidden z-10 border border-pink-200">
+      {/* 상단 헤더 */}
+      <div className="flex items-center justify-between px-6 py-4 bg-pink-100 border-b border-pink-200">
         <button
           onClick={goToPreviousMonth}
-          className="text-xl px-2 hover:text-blue-500 transition-colors"
+          className="text-2xl text-pink-500 hover:text-pink-700 transition"
         >
           &lt;
         </button>
-        <h2 className="text-xl font-semibold text-gray-800">
+        <h2 className="text-lg font-bold text-pink-700 tracking-wide">
           {`${year} ${currentDate.toLocaleString(
             'default',
             {
@@ -60,35 +61,36 @@ const Calendar: React.FC = () => {
         </h2>
         <button
           onClick={goToNextMonth}
-          className="text-xl px-2 hover:text-blue-500 transition-colors"
+          className="text-2xl text-pink-500 hover:text-pink-700 transition"
         >
           &gt;
         </button>
       </div>
 
-      <div className="grid grid-cols-7 gap-px bg-gray-300 text-sm">
+      {/* 요일 */}
+      <div className="grid grid-cols-7 gap-1 bg-pink-200 text-xs font-semibold text-pink-700">
         {daysOfWeek.map((day) => (
           <div
             key={day}
-            className="py-2 bg-gray-100 text-center font-bold text-gray-600"
+            className="py-2 text-center bg-pink-100 rounded"
           >
             {day}
           </div>
         ))}
+      </div>
 
+      {/* 날짜 */}
+      <div className="grid grid-cols-7 gap-1 bg-pink-100 p-2 text-sm">
         {days.map((day, index) =>
           day ? (
             <div
               key={index}
-              className="h-[60px] p-3 bg-white text-left cursor-pointer hover:bg-gray-100 transition-colors"
+              className="h-16 bg-white rounded-xl shadow-sm flex items-start justify-start p-2 text-pink-700 cursor-pointer hover:bg-pink-50 transition"
             >
               {day}
             </div>
           ) : (
-            <div
-              key={index}
-              className="h-[60px] bg-white"
-            ></div>
+            <div key={index} className="h-16"></div>
           )
         )}
       </div>
