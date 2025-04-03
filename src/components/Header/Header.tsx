@@ -1,18 +1,25 @@
 import React, { useState } from 'react';
 import LoginModal from '../../auth/LoginModal/LoginModal';
+import MobileSidebar from '../Sidebar/MobileSidebar';
 
 const Header: React.FC = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showLoginModal, setShowLoginModal] =
     useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
     <>
-      <header className="fixed top-0 left-1/2 -translate-x-1/2 w-full  h-[80px] bg-white shadow-md z-[1000] flex items-center justify-between px-6">
-        <h1 className="text-xl font-bold text-gray-800">
+      <header className="fixed top-0 left-1/2 -translate-x-1/2 w-full h-[80px] bg-white shadow-md z-[1000] flex items-center justify-between px-6">
+        {/* 로고 (모바일에서는 클릭 가능) */}
+        <h1
+          onClick={() => setIsMenuOpen(true)}
+          className="text-xl font-bold text-gray-800 cursor-pointer lg:cursor-default"
+        >
           Calendiary
         </h1>
 
+        {/* 로그인 / 프로필 */}
         {!isLoggedIn ? (
           <button
             onClick={() => setShowLoginModal(true)}
@@ -37,6 +44,7 @@ const Header: React.FC = () => {
         )}
       </header>
 
+      {/* 로그인 모달 */}
       {showLoginModal && (
         <LoginModal
           onClose={() => setShowLoginModal(false)}
@@ -44,6 +52,13 @@ const Header: React.FC = () => {
             setIsLoggedIn(true);
             setShowLoginModal(false);
           }}
+        />
+      )}
+
+      {/* 모바일 사이드바 */}
+      {isMenuOpen && (
+        <MobileSidebar
+          onClose={() => setIsMenuOpen(false)}
         />
       )}
     </>
