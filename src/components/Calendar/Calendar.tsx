@@ -86,7 +86,7 @@ const Calendar: React.FC = () => {
 
   return (
     <div
-      className={`relative mt-28 w-full max-w-[1024px] lg:max-w-[calc(100%-15rem)] lg:ml-60 ${current.bg} rounded-2xl shadow-md overflow-hidden z-10 ${current.border} mx-auto`}
+      className={`relative mt-20 w-full max-w-[1024px] lg:max-w-[calc(100%-15rem)] lg:ml-60 ${current.bg} rounded-2xl shadow-md overflow-hidden z-10 ${current.border} mx-auto`}
     >
       {/* 상단 헤더 */}
       <div
@@ -116,12 +116,12 @@ const Calendar: React.FC = () => {
 
       {/* 요일 */}
       <div
-        className={`h-8 grid grid-cols-7 gap-1 ${current.dayBg} text-xs font-semibold ${current.dayText} px-2 sm:px-4 md:px-6`}
+        className={`h-12 grid grid-cols-7 gap-1 ${current.dayBg} text-xs font-semibold ${current.dayText} px-2 sm:px-4 md:px-6`}
       >
         {daysOfWeek.map((day) => (
           <div
             key={day}
-            className={`py-2 text-center ${current.dayInnerBg} rounded`}
+            className={`mt-1 h-10 py-3 text-center ${current.dayInnerBg} rounded`}
           >
             {day}
           </div>
