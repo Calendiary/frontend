@@ -1,0 +1,34 @@
+{
+    "users": [
+      {
+        "id": 1,
+        "nickname": "보성",
+        "profileNickname": null,
+        "profileImage": null
+      }
+    ],
+    "schedules": [
+      {
+        "id": 1,
+        "userId": 1,
+        "date": "2025-04-13",
+        "title": "생일",
+        "description": "나의 생일 파티 🎉"
+      },
+      {
+        "id": 2,
+        "userId": 1,
+        "date": "2025-04-24",
+        "title": "놀기",
+        "description": "햄이랑 노는 날 😎"
+      },
+      {
+        "id": 3,
+        "userId": 1,
+        "date": "2025-05-05",
+        "title": "어린이날",
+        "description": "어린이날은 다 같이 쉬는 날 🐥"
+      }
+    ]
+  }
+  
