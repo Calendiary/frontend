@@ -1,119 +1,108 @@
-import React, { useState } from 'react';
-import { signUpUser, loginUser } from '@/app/api/auth'; // signUpUser 함수 import
-import { AxiosError } from 'axios';
+'use client';
+import React, { useEffect } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+
+interface User {
+  id: string;
+  nickname: string;
+  profileImage: string | null;
+  email: string | null;
+}
 
 interface LoginModalProps {
   onClose: () => void;
-  onSuccess: () => void;
-  isSignUp: boolean;  // 로그인/회원가입을 구분하는 props 추가
-  setIsSignUp: (value: boolean) => void;
+  onSuccess: (userData: User) => void;
 }
 
-const LoginModal: React.FC<LoginModalProps> = ({ onClose, onSuccess, isSignUp, setIsSignUp }) => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-
-  const handleSubmit = async () => {
+const LoginModal: React.FC<LoginModalProps> = ({ onClose, onSuccess }) => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  
+  // 카카오 로그인 설정
+  const KAKAO_REST_API_KEY = process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY;
+  const REDIRECT_URI = process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI || `${window.location.origin}/api/auth/kakao/callback`;
+  
+  // 카카오에서 리다이렉트 후 처리
+  useEffect(() => {
+    // 카카오 로그인 콜백 처리
+    const code = searchParams.get('code');
+    if (code) {
+      // 코드를 받았으면 서버에 인증 요청
+      handleKakaoCallback(code);
+    }
+  }, [searchParams]);
+  
+  const handleKakaoLogin = () => {
+    const kakaoAuthUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
+    window.location.href = kakaoAuthUrl;
+  };
+  
+  const handleKakaoCallback = async (code: string) => {
     try {
-      if (isSignUp) {
-        // 회원가입 처리
-        const newUser = await signUpUser(name, email, password);
-        console.log('회원가입 성공:', newUser);
-        setIsSignUp(false); // 회원가입 후 로그인 화면으로 전환
-        alert('회원가입 성공! 로그인 화면으로 전환됩니다.');
+      // 서버에 인증 코드 전송
+      const response = await fetch('/api/auth/kakao', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ code }),
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        // 사용자 정보를 로컬스토리지나 상태에 저장
+        localStorage.setItem('user', JSON.stringify(data.user));
+        // 로그인 성공 처리
+        onSuccess(data.user);
+        // 홈으로 리다이렉트
+        router.push('/');
       } else {
-        // 로그인 처리
-        const user = await loginUser(email, password);
-        console.log('로그인 성공:', user);
-        onSuccess();  // 로그인 성공 시 onSuccess 호출
-        alert('로그인 성공!');
+        console.error('카카오 로그인 실패');
       }
     } catch (error) {
-      if (error instanceof AxiosError) {
-        // AxiosError가 발생한 경우
-        alert(`API 호출 실패: ${error.response?.data?.message || error.message}`);
-      } else if (error instanceof Error) {
-        // 일반 Error 처리
-        alert(`오류 발생: ${error.message}`);
-      } else {
-        // 알 수 없는 오류 처리
-        alert('알 수 없는 오류가 발생했습니다.');
-      }
+      console.error('카카오 로그인 처리 중 오류:', error);
+    }
+  };
+  
+  // 모달 외부 클릭 시 닫기
+  const handleOutsideClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (e.target === e.currentTarget) {
+      onClose();
     }
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[2000]">
-      <div className="bg-white w-[90%] max-w-[400px] p-6 rounded-xl shadow-lg relative">
-        {/* 닫기 버튼 */}
-        <button
-          onClick={onClose}
-          className="absolute top-3 right-4 text-gray-400 hover:text-gray-600 text-xl"
-        >
-          ×
-        </button>
-
-        {/* 제목 */}
-        <h2 className="text-xl font-bold text-gray-800 text-center mb-6">
-          {isSignUp ? '회원가입' : '로그인'}
-        </h2>
-
-        {/* 입력 폼 */}
-        {isSignUp && (
-          <input
-            type="text"
-            placeholder="이름"
-            className="w-full border border-gray-300 rounded-md px-3 py-2 mb-3 text-sm text-black"
-            value={name}
-            onChange={(e) => setName(e.target.value)} // 이름 입력
-          />
-        )}
-        <input
-          type="text"
-          placeholder="이메일"
-          className="w-full border border-gray-300 rounded-md px-3 py-2 mb-3 text-sm  text-black"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)} // 이메일 입력
-        />
-        <input
-          type="password"
-          placeholder="비밀번호"
-          className="w-full border border-gray-300 rounded-md px-3 py-2 mb-4 text-sm  text-black"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)} // 비밀번호 입력
-        />
-
-        <button
-          onClick={handleSubmit}
-          className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 text-sm mb-4"
-        >
-          {isSignUp ? '회원가입' : '로그인'}
-        </button>
-
-        {/* 로그인 / 회원가입 전환 링크 */}
-        <div className="text-sm text-gray-500 text-center mb-4">
-          {isSignUp ? (
-            <>
-              이미 계정이 있으신가요?{' '}
-              <span
-                onClick={() => setIsSignUp(false)} // 로그인 화면으로 전환
-                className="text-blue-600 cursor-pointer hover:underline"
-              >
-                로그인
-              </span>
-            </>
-          ) : (
-            <>
-              아직 계정이 없으신가요?{' '}
-              <span
-                onClick={() => setIsSignUp(true)} // 회원가입 화면으로 전환
-                className="text-blue-600 cursor-pointer hover:underline"
-              >
-                회원가입
-              </span>
-            </>
-          )}
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[2000]" onClick={handleOutsideClick}>
+      <div className="bg-white rounded-lg p-8 w-full max-w-md shadow-xl">
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-2xl font-bold text-gray-800">로그인</h2>
+          <button 
+            onClick={onClose}
+            className="text-gray-500 hover:text-gray-700"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+        
+        <div className="space-y-4">
+          <button 
+            onClick={handleKakaoLogin}
+            className="flex items-center justify-center w-full bg-yellow-300 hover:bg-yellow-400 text-gray-800 font-medium py-3 px-4 rounded-md transition-colors"
+          >
+            <div className="flex items-center">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fillRule="evenodd" clipRule="evenodd" d="M12 4C7.03 4 3 7.13 3 11C3 13.41 4.56 15.52 6.99 16.74V20L10.45 17.64C10.96 17.71 11.47 17.75 12 17.75C16.97 17.75 21 14.62 21 10.75C21 6.88 16.97 4 12 4Z" fill="black"/>
+              </svg>
+              <span className="ml-2">카카오 로그인</span>
+            </div>
+          </button>
+          
+          {/* 추가 로그인 옵션 */}
+          <div className="mt-6 text-center text-sm text-gray-500">
+            <p>아직 회원이 아니신가요? <button className="text-blue-600 hover:underline">회원가입</button></p>
+          </div>
         </div>
       </div>
     </div>

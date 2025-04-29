@@ -2,33 +2,8 @@
   "users": [
     {
       "id": 1,
-      "email": "1234",
       "nickname": "보성",
-      "password": "1234"
-    },
-    {
-      "id": 2,
-      "email": "12",
-      "nickname": "김",
-      "password": "12"
-    },
-    {
-      "id": 3,
-      "email": "23",
-      "nickname": "보",
-      "password": "23"
-    },
-    {
-      "id": 4,
-      "email": "34",
-      "nickname": "성",
-      "password": "34"
-    },
-    {
-      "id": 5,
-      "email": "45",
-      "nickname": "김보",
-      "password": "45"
+      "profile_image": ""
     }
   ],
   "schedules": [
