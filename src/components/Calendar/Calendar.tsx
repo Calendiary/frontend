@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useTheme } from '../../context/ThemeContext';
+import { useTheme } from '../../contexts/ThemeContext';
 import { themeMap } from '../../styles/calendarTheme';
 import { getMonthlySchedules } from '../../app/api/calendar';
 import MonthLabel from './MonthLabel';
