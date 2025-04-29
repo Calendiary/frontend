@@ -1,12 +1,13 @@
 'use client';
 
 import React, { useState } from 'react';
-import LoginModal from '../auth/LoginModal';
+import LoginModal from '../Modal/LoginModal'; // 수정된 LoginModal 임포트
 import MobileSidebar from './MobileSidebar';
 
 const Header: React.FC = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
+  const [isSignUp, setIsSignUp] = useState(false); // 로그인과 회원가입을 구분하는 상태
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
@@ -22,12 +23,20 @@ const Header: React.FC = () => {
 
         {/* 로그인 / 프로필 */}
         {!isLoggedIn ? (
-          <button
-            onClick={() => setShowLoginModal(true)}
-            className="px-4 py-2 text-sm bg-none hover:bg-gray-200 text-gray-800 rounded-md"
-          >
-            로그인
-          </button>
+          <>
+            <button
+              onClick={() => { setIsSignUp(false); setShowLoginModal(true); }} // 로그인 버튼 클릭 시
+              className="px-4 py-2 text-sm bg-none hover:bg-gray-200 text-gray-800 rounded-md"
+            >
+              로그인
+            </button>
+            <button
+              onClick={() => { setIsSignUp(true); setShowLoginModal(true); }} // 회원가입 버튼 클릭 시
+              className="px-4 py-2 text-sm bg-none hover:bg-gray-200 text-gray-800 rounded-md"
+            >
+              회원가입
+            </button>
+          </>
         ) : (
           <div className="flex items-center gap-3">
             <img
@@ -45,12 +54,14 @@ const Header: React.FC = () => {
         )}
       </header>
 
-      {/* 로그인 모달 */}
+      {/* 로그인 / 회원가입 모달 */}
       {showLoginModal && (
         <LoginModal
+          isSignUp={isSignUp}  // isSignUp 값을 전달
+          setIsSignUp={setIsSignUp} // setIsSignUp 값을 전달
           onClose={() => setShowLoginModal(false)}
           onSuccess={() => {
-            setIsLoggedIn(true);
+            setIsLoggedIn(true);  // 로그인 성공 시
             setShowLoginModal(false);
           }}
         />
@@ -58,9 +69,7 @@ const Header: React.FC = () => {
 
       {/* 모바일 사이드바 */}
       {isMenuOpen && (
-        <MobileSidebar
-          onClose={() => setIsMenuOpen(false)}
-        />
+        <MobileSidebar onClose={() => setIsMenuOpen(false)} />
       )}
     </>
   );

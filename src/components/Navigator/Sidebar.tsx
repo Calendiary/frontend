@@ -1,6 +1,6 @@
 'use client';  // 클라이언트 컴포넌트임을 명시
 
-import { useTheme, Theme } from '../context/ThemeContext';
+import { useTheme, Theme } from '../../context/ThemeContext';
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';  // ✅ Next.js 13 app 라우팅 전용 훅

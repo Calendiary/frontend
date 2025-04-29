@@ -3,8 +3,8 @@
 
 import './globals.css';
 import { ThemeProvider } from '../context/ThemeContext';
-import Header from '../components/Header';  // 또는 Navigator
-import Sidebar from '../components/Sidebar';
+import Header from '../components/Navigator/Header';  // 또는 Navigator
+import Sidebar from '../components/Navigator/Sidebar';
 import React from 'react';
 
 export default function RootLayout({

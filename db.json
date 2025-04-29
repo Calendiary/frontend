@@ -1,34 +1,57 @@
 {
-    "users": [
-      {
-        "id": 1,
-        "nickname": "보성",
-        "profileNickname": null,
-        "profileImage": null
-      }
-    ],
-    "schedules": [
-      {
-        "id": 1,
-        "userId": 1,
-        "date": "2025-04-13",
-        "title": "생일",
-        "description": "나의 생일 파티 🎉"
-      },
-      {
-        "id": 2,
-        "userId": 1,
-        "date": "2025-04-24",
-        "title": "놀기",
-        "description": "햄이랑 노는 날 😎"
-      },
-      {
-        "id": 3,
-        "userId": 1,
-        "date": "2025-05-05",
-        "title": "어린이날",
-        "description": "어린이날은 다 같이 쉬는 날 🐥"
-      }
-    ]
-  }
-  
+  "users": [
+    {
+      "id": 1,
+      "email": "1234",
+      "nickname": "보성",
+      "password": "1234"
+    },
+    {
+      "id": 2,
+      "email": "12",
+      "nickname": "김",
+      "password": "12"
+    },
+    {
+      "id": 3,
+      "email": "23",
+      "nickname": "보",
+      "password": "23"
+    },
+    {
+      "id": 4,
+      "email": "34",
+      "nickname": "성",
+      "password": "34"
+    },
+    {
+      "id": 5,
+      "email": "45",
+      "nickname": "김보",
+      "password": "45"
+    }
+  ],
+  "schedules": [
+    {
+      "id": 1,
+      "userId": 1,
+      "date": "2025-04-13",
+      "title": "생일",
+      "description": "나의 생일 파티 🎉"
+    },
+    {
+      "id": 2,
+      "userId": 1,
+      "date": "2025-04-24",
+      "title": "놀기",
+      "description": "햄이랑 노는 날 😎"
+    },
+    {
+      "id": 3,
+      "userId": 1,
+      "date": "2025-05-05",
+      "title": "어린이날",
+      "description": "어린이날은 다 같이 쉬는 날 🐥"
+    }
+  ]
+}

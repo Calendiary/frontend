@@ -1,6 +1,6 @@
 'use client';
 
-import { useTheme, Theme } from '../context/ThemeContext';
+import { useTheme, Theme } from '../../context/ThemeContext';
 import React, { useState } from 'react';
 import { usePathname } from 'next/navigation';  // ✅ 바뀐 부분
 import Link from 'next/link';  // react-router-dom의 Link를 next/link로 변경
