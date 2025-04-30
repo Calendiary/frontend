@@ -1,49 +1,73 @@
+// ✅ Header.tsx (닉네임 모달 즉시 뜨도록 개선된 최종 버전)
 'use client';
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import LoginModal from '../Modal/LoginModal';
 import MobileSidebar from './MobileSidebar';
+import NicknameModal from '../Modal/NicknameModal';
+import { usePathname } from 'next/navigation';
 
 interface User {
-  id: string;
+  id: number;
+  kakaoId: string;
   nickname: string;
   profileImage: string | null;
-  email: string | null;
 }
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 const Header: React.FC = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [showNicknameModal, setShowNicknameModal] = useState(false);
   const [user, setUser] = useState<User | null>(null);
+  const pathname = usePathname();
 
-  // 로그인 상태 체크 및 초기화
   useEffect(() => {
-    const storedUser = localStorage.getItem('user');
-    if (storedUser) {
-      try {
-        const parsedUser = JSON.parse(storedUser);
-        setUser(parsedUser);
-        setIsLoggedIn(true);
-      } catch (error) {
-        console.error('사용자 정보 파싱 오류:', error);
-        localStorage.removeItem('user');
-      }
-    }
-  }, []);
+    const temp = sessionStorage.getItem('tempKakaoUser');
+    const alreadyChecked = sessionStorage.getItem('nicknameModalChecked');
 
-  // 로그아웃 처리
+    if (temp && !alreadyChecked) {
+      setShowNicknameModal(true);
+      sessionStorage.setItem('nicknameModalChecked', 'true');
+      return;
+    }
+
+    const kakaoId = sessionStorage.getItem('kakaoId');
+    if (!kakaoId) return;
+
+    fetch(`${API_URL}/users?kakaoId=${kakaoId}`)
+      .then((res) => {
+        if (!res.ok) throw new Error('유저 조회 실패');
+        return res.json();
+      })
+      .then((users) => {
+        if (!users.length) {
+          sessionStorage.removeItem('kakaoId');
+          return;
+        }
+
+        const u = users[0];
+        setUser({
+          id: u.id,
+          kakaoId: u.kakaoId,
+          nickname: u.nickname,
+          profileImage: u.profile_image,
+        });
+        setIsLoggedIn(true);
+      })
+      .catch((err) => {
+        console.error('유저 정보 불러오기 실패:', err);
+        sessionStorage.removeItem('kakaoId');
+      });
+  }, [pathname]);
+
   const handleLogout = () => {
-    localStorage.removeItem('user');
+    sessionStorage.removeItem('kakaoId');
+    sessionStorage.removeItem('tempKakaoUser');
+    sessionStorage.removeItem('nicknameModalChecked');
     setUser(null);
     setIsLoggedIn(false);
-  };
-
-  // 로그인 성공 처리
-  const handleLoginSuccess = (userData: User) => {
-    setUser(userData);
-    setIsLoggedIn(true);
-    localStorage.setItem('user', JSON.stringify(userData));
-    setShowLoginModal(false);
   };
 
   return (
@@ -52,7 +76,7 @@ const Header: React.FC = () => {
         <h1 onClick={() => setIsMenuOpen(true)} className="text-xl font-bold text-gray-800 cursor-pointer lg:cursor-default">
           Calendiary
         </h1>
-        
+
         {!isLoggedIn ? (
           <button
             onClick={() => setShowLoginModal(true)}
@@ -80,11 +104,18 @@ const Header: React.FC = () => {
       {showLoginModal && (
         <LoginModal
           onClose={() => setShowLoginModal(false)}
-          onSuccess={(userData) => handleLoginSuccess(userData)}
+          onSuccess={() => window.location.reload()}
         />
       )}
 
       {isMenuOpen && <MobileSidebar onClose={() => setIsMenuOpen(false)} />}
+
+      {showNicknameModal && (
+        <NicknameModal
+          onClose={() => setShowNicknameModal(false)}
+          onSuccess={() => window.location.reload()}
+        />
+      )}
     </>
   );
 };

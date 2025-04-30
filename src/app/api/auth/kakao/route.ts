@@ -55,7 +55,6 @@ export async function POST(request: NextRequest) {
       id: userData.id,
       nickname: userData.properties?.nickname || '사용자',
       profileImage: userData.properties?.profile_image || null,
-      email: userData.kakao_account?.email || null,
     };
     
     // 여기서 JWT 토큰을 생성하거나 세션을 설정할 수 있습니다
