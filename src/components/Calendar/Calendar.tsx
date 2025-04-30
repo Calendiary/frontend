@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTheme } from '../../contexts/ThemeContext';
 import { themeMap } from '../../styles/calendarTheme';
-import { getMonthlySchedules } from '../../app/api/calendar';
+import { getMonthlySchedules } from  '@/app/api/calendar/route'
 import MonthLabel from './MonthLabel';
 
 const daysOfWeek = [

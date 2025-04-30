@@ -6,7 +6,7 @@ export async function POST(request: NextRequest) {
     
     // 카카오 인증 토큰 획득
     const KAKAO_REST_API_KEY = process.env.KAKAO_REST_API_KEY;
-    const REDIRECT_URI = process.env.KAKAO_REDIRECT_URI || `${request.nextUrl.origin}/api/auth/kakao/callback`;
+    const REDIRECT_URI = process.env.KAKAO_REDIRECT_URI || `${request.nextUrl.origin}/callback`;
     
     const tokenResponse = await fetch('https://kauth.kakao.com/oauth/token', {
       method: 'POST',

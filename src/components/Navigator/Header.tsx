@@ -1,74 +1,21 @@
-// ✅ Header.tsx (닉네임 모달 즉시 뜨도록 개선된 최종 버전)
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import LoginModal from '../Modal/LoginModal';
 import MobileSidebar from './MobileSidebar';
 import NicknameModal from '../Modal/NicknameModal';
-import { usePathname } from 'next/navigation';
-
-interface User {
-  id: number;
-  kakaoId: string;
-  nickname: string;
-  profileImage: string | null;
-}
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
+import { useAuthUser } from '@/hooks/userAuthUser';
 
 const Header: React.FC = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const {
+    user,
+    isLoggedIn,
+    showNicknameModal,
+    setShowNicknameModal,
+    logout,
+  } = useAuthUser();
+
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [showNicknameModal, setShowNicknameModal] = useState(false);
-  const [user, setUser] = useState<User | null>(null);
-  const pathname = usePathname();
-
-  useEffect(() => {
-    const temp = sessionStorage.getItem('tempKakaoUser');
-    const alreadyChecked = sessionStorage.getItem('nicknameModalChecked');
-
-    if (temp && !alreadyChecked) {
-      setShowNicknameModal(true);
-      sessionStorage.setItem('nicknameModalChecked', 'true');
-      return;
-    }
-
-    const kakaoId = sessionStorage.getItem('kakaoId');
-    if (!kakaoId) return;
-
-    fetch(`${API_URL}/users?kakaoId=${kakaoId}`)
-      .then((res) => {
-        if (!res.ok) throw new Error('유저 조회 실패');
-        return res.json();
-      })
-      .then((users) => {
-        if (!users.length) {
-          sessionStorage.removeItem('kakaoId');
-          return;
-        }
-
-        const u = users[0];
-        setUser({
-          id: u.id,
-          kakaoId: u.kakaoId,
-          nickname: u.nickname,
-          profileImage: u.profile_image,
-        });
-        setIsLoggedIn(true);
-      })
-      .catch((err) => {
-        console.error('유저 정보 불러오기 실패:', err);
-        sessionStorage.removeItem('kakaoId');
-      });
-  }, [pathname]);
-
-  const handleLogout = () => {
-    sessionStorage.removeItem('kakaoId');
-    sessionStorage.removeItem('tempKakaoUser');
-    sessionStorage.removeItem('nicknameModalChecked');
-    setUser(null);
-    setIsLoggedIn(false);
-  };
 
   return (
     <>
@@ -94,18 +41,13 @@ const Header: React.FC = () => {
               </div>
             )}
             <span className="text-sm font-medium hidden md:block">{user?.nickname}</span>
-            <button onClick={handleLogout} className="text-sm text-gray-600 hover:underline">
-              로그아웃
-            </button>
+            <button onClick={logout} className="text-sm text-gray-600 hover:underline">로그아웃</button>
           </div>
         )}
       </header>
 
       {showLoginModal && (
-        <LoginModal
-          onClose={() => setShowLoginModal(false)}
-          onSuccess={() => window.location.reload()}
-        />
+        <LoginModal onClose={() => setShowLoginModal(false)} onSuccess={() => window.location.reload()} />
       )}
 
       {isMenuOpen && <MobileSidebar onClose={() => setIsMenuOpen(false)} />}
